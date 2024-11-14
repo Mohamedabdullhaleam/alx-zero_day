@@ -13,6 +13,7 @@ A streamlined API for validating Egyptian National IDs and extracting essential 
 - [ID Format](#id-format)
 - [Error Handling](#error-handling)
 - [Unit Tests](#unit-tests)
+- Test Cases Covered(#Test Cases Covered)
 
 
 ## Overview
@@ -164,3 +165,40 @@ To run the unit tests using Jest:
    ```
 
 This will run the test suite, checking for edge cases, including valid and invalid IDs.
+## Test Cases Covered
+
+The following test cases are covered in the unit tests to ensure the functionality and reliability of the API:
+
+1. **Valid National IDs:**
+   - Tests for valid National IDs from various governorates (e.g., Cairo, Alexandria, Beheira).
+   - Correct parsing of birth dates, gender, and governorate.
+   
+2. **Century Code Handling:**
+   - Correct handling of century codes (`2` for 1900s and `3` for 2000s) to accurately parse the year of birth.
+
+3. **Date Validation:**
+   - **Valid Dates:** Tests for valid dates (e.g., leap years, valid months, valid days).
+     - For example, February 29 on leap years like 1996-02-29.
+   
+   - **Invalid Dates:**
+     - **February 30:** February 30 is not a valid date in any year.
+     - **April 31:** April has only 30 days, so April 31 is an invalid date.
+     - **Invalid Leap Year:** February 29 on non-leap years (e.g., 1999-02-29, which is invalid).
+     - **Out of Range Dates:** Dates like `1999-13-32` or `2000-00-00` where the month or day is out of range.
+
+4. **Gender Extraction:**
+   - Tests for gender extraction based on the last digit of the birth sequence (odd for male, even for female).
+   - Example: ID ending with an odd number indicates male, and even number indicates female.
+
+5. **Governorate Validation:**
+   - Tests for valid and invalid governorate codes (mapping the 2-digit governorate code to the corresponding name).
+     - For example, governorate code `18` corresponds to "Beheira", and code `01` corresponds to "Cairo".
+
+6. **Invalid IDs:**
+   - Tests for invalid IDs (e.g., missing digits, incorrect length, invalid date formats).
+     - For example, an ID with only 13 digits instead of 14, or non-numeric characters.
+
+7. **Missing ID and Format Validation:**
+   - Tests for cases where the ID is missing or the format is incorrect (less than 14 digits, non-numeric characters).
+   - For example, a request without the `id` field, or an ID that is not exactly 14 digits long.
+
