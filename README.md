@@ -13,7 +13,7 @@ A streamlined API for validating Egyptian National IDs and extracting essential 
 - [ID Format](#id-format)
 - [Error Handling](#error-handling)
 - [Unit Tests](#unit-tests)
-- Test Cases Covered(#Test Cases Covered)
+- [Test Cases Covered](#test-cases-covered)
 
 
 ## Overview
