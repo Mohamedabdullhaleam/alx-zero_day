@@ -201,4 +201,47 @@ The following test cases are covered in the unit tests to ensure the functionali
 7. **Missing ID and Format Validation:**
    - Tests for cases where the ID is missing or the format is incorrect (less than 14 digits, non-numeric characters).
    - For example, a request without the `id` field, or an ID that is not exactly 14 digits long.
+   ## Project Flow
+
+### 1. **Request Validation**
+   - The API receives a POST request with a National ID and validates if it is exactly 14 digits and numeric. If the ID is not in the correct format, it returns a `400` error with the message: "ID must be exactly 14 digits".
+
+### 2. **Century Code Validation**
+   - The first digit represents the century code (`2` for 1900–1999, `3` for 2000–2099). If the first digit is not `2` or `3`, the ID is considered invalid, returning a `400` error.
+
+### 3. **Birth Date Validation**
+   - The next six digits represent the birth date (`YYMMDD`).
+     - **Year Validation:** The year is formed from the century code and the first two digits of the ID. It is checked to ensure it falls within a valid range (e.g., 1900–2099).
+     - **Month Validation:** The month (`MM`) is checked to ensure it is between `01` and `12`.
+     - **Day Validation:** The day (`DD`) is checked to ensure it is a valid day for the given month (e.g., no February 30, April 31, etc.).
+     - If the date is invalid, the API returns a `400` error with the message: "Invalid birth date".
+
+### 4. **Leap Year Validation**
+   - If the birth date is February 29, it is further validated to ensure the year is a leap year. If not, it returns a `400` error with the message: "Invalid birth date".
+
+### 5. **Governorate Code Validation**
+   - The two digits after the birth date (`VV`) represent the governorate code. The API checks if the governorate code is valid (e.g., `01` for Cairo, `02` for Alexandria). If it is not recognized, the API returns a `400` error with the message: "Invalid governorate code".
+
+### 6. **Gender Validation**
+   - The second-last digit (`G`) represents gender. Odd digits are considered male, and even digits are considered female. If the gender digit is invalid, the API returns a `400` error with the message: "Invalid gender".
+
+### 7. **Final Validation**
+   - If all validation checks pass, the API returns `200 OK` with the extracted data, including:
+     - **Birth Date:** in `YYYY-MM-DD` format.
+     - **Gender:** male or female.
+     - **Governorate:** name of the governorate.
+
+### 8. **Error Handling**
+   - If the ID is missing from the request, it returns `400` with the message: "ID is required".
+   - If any validation fails, the API returns a `400` with the relevant error message (e.g., "Invalid birth date", "Invalid governorate code", etc.).
+
+### 9. **Swagger Documentation**
+   - Swagger UI is available at `/api-docs` to test endpoints, view request/response formats, and explore the API.
+
+### 10. **Edge Cases & Tests**
+   - The API handles edge cases such as:
+     - Invalid dates like February 30, April 31.
+     - Leap year validation for February 29.
+     - Gender validation based on the last digit of the ID.
+
 
